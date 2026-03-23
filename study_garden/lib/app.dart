@@ -54,8 +54,8 @@ import 'package:provider/provider.dart';
 import 'providers/garden_provider.dart';
 import 'main_shell.dart';
 
-class StudySproutApp extends StatelessWidget {
-  const StudySproutApp({super.key});
+class StudyGardenApp extends StatelessWidget {
+  const StudyGardenApp({super.key});
 
   @override
   Widget build(BuildContext context) {
