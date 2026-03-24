@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/garden_provider.dart';
-import 'models/plant.dart';
+import '../providers/garden_provider.dart';
+import '../models/plant.dart';
 import 'plant_detail_screen.dart';
 import 'focus_screen.dart';
 
@@ -13,7 +13,6 @@ class Homescreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Garden'),
-        // Sunlight counter in actions
         actions: [
           Consumer<GardenProvider>(
             builder: (context, provider, child) {
@@ -23,10 +22,7 @@ class Homescreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.wb_sunny, color: Colors.amber),
                     const SizedBox(width: 4),
-                    Text(
-                      '${provider.sunlight}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
+                    Text('${provider.sunlight}'),
                   ],
                 ),
               );
@@ -44,11 +40,9 @@ class Homescreen extends StatelessWidget {
 
           return Column(
             children: [
-              // Smart suggestion banner at top
               if (provider.sessions.isNotEmpty)
                 _SuggestionBanner(provider: provider),
               
-              // Main grid
               Expanded(
                 child: plants.isEmpty 
                   ? _EmptyState(onAdd: () => _showAddPlantDialog(context))
@@ -77,7 +71,7 @@ class Homescreen extends StatelessWidget {
               title: const Text('Start Focus Session'),
               subtitle: Text('Grow ${plant.name}'),
               onTap: () {
-                Navigator.pop(context); // Close bottom sheet
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -160,7 +154,7 @@ class Homescreen extends StatelessWidget {
   }
 }
 
-// Extracted widgets for cleaner code
+// WIDGET CLASSES (must be in the same file)
 
 class _SuggestionBanner extends StatelessWidget {
   final GardenProvider provider;
@@ -243,14 +237,15 @@ class _PlantGrid extends StatelessWidget {
         mainAxisSpacing: 16,
         childAspectRatio: 0.85,
       ),
-      itemCount: plants.length + 1, // +1 for add button
+      itemCount: plants.length + 1,
       itemBuilder: (context, index) {
         if (index == plants.length) {
           return _AddPlantCard(onTap: onAddTap);
         }
-        
-        final plant = plants[index];
-        return _PlantCard(plant: plant, onTap: () => onPlantTap(plant));
+        return _PlantCard(
+          plant: plants[index],
+          onTap: () => onPlantTap(plants[index]),
+        );
       },
     );
   }
@@ -264,7 +259,6 @@ class _PlantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Visual growth representation
     String emoji = '🌱';
     Color color = Colors.green.shade100;
     if (plant.growthStage >= 5) {
@@ -297,7 +291,7 @@ class _PlantCard extends StatelessWidget {
               style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
             ),
             Text(
-              '${plant.minutesAccumulated} min total',
+              '${plant.minutesAccumulated} min',
               style: TextStyle(color: Colors.grey.shade600, fontSize: 11),
             ),
           ],

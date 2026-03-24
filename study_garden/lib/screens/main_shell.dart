@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'homescreen.dart';
-import 'seed_shop.dart';
-import 'study_log.dart';
-import 'setting_screen.dart';
+import 'home_screen.dart';
+import 'seed_shop_screen.dart';
+import 'study_log_screen.dart';
+import 'settings_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
