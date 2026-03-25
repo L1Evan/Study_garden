@@ -107,13 +107,15 @@ class _FocusScreenState extends State<FocusScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
-            
-            // Plant visualization
-            Text(
-              _getPlantEmoji(),
+        child: _isCompleted
+            ? _buildCompletedState()
+            : Column(
+                children: [
+                  const Spacer(),
+                  
+                  // Plant visualization
+                  Text(
+                    _getPlantEmoji(),
               style: const TextStyle(fontSize: 64),
             ),
             const SizedBox(height: 16),
@@ -226,29 +228,43 @@ class _FocusScreenState extends State<FocusScreen> {
     final minutes = (_initialSeconds - _secondsRemaining) ~/ 60;
     final sunlightEarned = (minutes + (minutes ~/ 15) * 5);
 
-    return Column(
-      children: [
-        Text(
-          '+$minutes minutes added!',
-          style: const TextStyle(fontSize: 20, color: Colors.green),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '☀️ +$sunlightEarned sunlight',
-          style: const TextStyle(fontSize: 18, color: Colors.lightGreen),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          '☀️ Sunlight earned',
-          style: TextStyle(fontSize: 16),
-        ),
-        const SizedBox(height: 24),
-        FilledButton.icon(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.check),
-          label: const Text('Done'),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            _getPlantEmoji(),
+            style: const TextStyle(fontSize: 64),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Growth Complete!',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 18),
+          Text(
+            '+$minutes minutes added!',
+            style: const TextStyle(fontSize: 20, color: Colors.green),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '☀️ +$sunlightEarned sunlight',
+            style: const TextStyle(fontSize: 18, color: Colors.lightGreen),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Great job! Keep going.',
+            style: TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.check),
+            label: const Text('Done'),
+          ),
+        ],
+      ),
     );
   }
 
