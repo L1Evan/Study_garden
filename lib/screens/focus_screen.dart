@@ -63,17 +63,19 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _completeSession() {
     _timer?.cancel();
-    
-    // Calculate actual minutes completed (in case they stopped early)
-    final minutesCompleted = (_initialSeconds - _secondsRemaining) ~/ 60;
-    
+
+    final secondsCompleted = _initialSeconds - _secondsRemaining;
+
+    // Award at least one minute after 30 seconds of work
+    final minutesCompleted = ((secondsCompleted + 30) / 60).floor();
+
     if (minutesCompleted > 0) {
       context.read<GardenProvider>().completeFocusSession(
         plantId: widget.plant.id,
         durationMinutes: minutesCompleted,
       );
     }
-    
+
     setState(() {
       _isRunning = false;
       _isCompleted = true;
@@ -280,7 +282,7 @@ class _FocusScreenState extends State<FocusScreen> {
               leading: Icon(Icons.timer),
             ),
             const Divider(),
-            ...[5, 10, 15, 20, 25, 30, 45, 60].map((minutes) {
+            ...[1, 5, 10, 15, 20, 25, 30, 45, 60].map((minutes) {
               return ListTile(
                 title: Text('$minutes minutes'),
                 trailing: _initialSeconds == minutes * 60
