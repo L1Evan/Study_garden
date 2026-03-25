@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/settings_provider.dart';
 import '../services/settings_service.dart';
 
 
@@ -11,7 +13,6 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   final _settings = SettingsService();
-  bool _darkMode = false;
   int _defaultDuration = 25;
 
   @override
@@ -23,7 +24,6 @@ class _SettingScreenState extends State<SettingScreen> {
   Future<void> _loadSettings() async {
     await _settings.init();
     setState(() {
-      _darkMode = _settings.getDarkMode();
       _defaultDuration = _settings.getDefaultSessionDuration();
     });
   }
@@ -36,13 +36,18 @@ class _SettingScreenState extends State<SettingScreen> {
         children: [
           // Section: Appearance
           const _SectionHeader(title: 'Appearance'),
-          SwitchListTile(
-            title: const Text('Dark Mode'),
-            subtitle: const Text('Coming soon'),
-            value: _darkMode,
-            onChanged: (value) {
-              setState(() => _darkMode = value);
-              _settings.setDarkMode(value);
+          Consumer<SettingsProvider>(
+            builder: (context, settingsProvider, child) {
+              return SwitchListTile(
+                title: const Text('Dark Mode'),
+                subtitle: Text(settingsProvider.isDarkMode
+                    ? 'Dark mode is enabled'
+                    : 'Light mode is enabled'),
+                value: settingsProvider.isDarkMode,
+                onChanged: (value) {
+                  settingsProvider.setDarkMode(value);
+                },
+              );
             },
           ),
           

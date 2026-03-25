@@ -94,7 +94,7 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F0),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(widget.plant.name),
         actions: [

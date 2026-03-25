@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/garden_provider.dart';
+import 'providers/settings_provider.dart';
 import 'screens/main_shell.dart';
 
 class StudySproutApp extends StatelessWidget {
@@ -8,30 +9,62 @@ class StudySproutApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GardenProvider()..initialize(),
-      child: MaterialApp(
-        title: 'StudySprout',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF4CAF50),
-            brightness: Brightness.light,
-          ),
-          cardTheme: CardThemeData(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-          ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => GardenProvider()..initialize(),
         ),
-        home: MainShell(),  // ← REMOVED 'const' - add back if MainShell has const constructor
+        ChangeNotifierProvider(
+          create: (_) => SettingsProvider()..initialize(),
+        ),
+      ],
+      child: Consumer<SettingsProvider>(
+        builder: (context, settings, child) {
+          return MaterialApp(
+            title: 'StudySprout',
+            debugShowCheckedModeBanner: false,
+            themeMode: settings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF4CAF50),
+                brightness: Brightness.light,
+              ),
+              cardTheme: CardThemeData(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              appBarTheme: const AppBarTheme(
+                centerTitle: true,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF4CAF50),
+                brightness: Brightness.dark,
+              ),
+              cardTheme: CardThemeData(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              appBarTheme: const AppBarTheme(
+                centerTitle: true,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              scaffoldBackgroundColor: const Color(0xFF121212),
+            ),
+            home: const MainShell(),
+          );
+        },
       ),
     );
   }
