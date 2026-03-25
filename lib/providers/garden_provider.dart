@@ -116,7 +116,11 @@ class GardenProvider extends ChangeNotifier {
   }) async {
     final db = await _dbHelper.database;
     final now = DateTime.now();
-    final sunlightEarned = durationMinutes;
+
+    // More sunlight reward: base plus time bonus
+    final baseSunlight = durationMinutes;
+    final bonus = (durationMinutes ~/ 15) * 5; // +5 per 15 minute block
+    final sunlightEarned = baseSunlight + bonus;
 
     final session = FocusSession(
       id: _uuid.v4(),

@@ -224,12 +224,18 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Widget _buildCompletedState() {
     final minutes = (_initialSeconds - _secondsRemaining) ~/ 60;
-    
+    final sunlightEarned = (minutes + (minutes ~/ 15) * 5);
+
     return Column(
       children: [
         Text(
           '+$minutes minutes added!',
           style: const TextStyle(fontSize: 20, color: Colors.green),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '☀️ +$sunlightEarned sunlight',
+          style: const TextStyle(fontSize: 18, color: Colors.lightGreen),
         ),
         const SizedBox(height: 16),
         const Text(
@@ -258,7 +264,7 @@ class _FocusScreenState extends State<FocusScreen> {
               leading: Icon(Icons.timer),
             ),
             const Divider(),
-            ...[15, 25, 45, 60].map((minutes) {
+            ...[5, 10, 15, 20, 25, 30, 45, 60].map((minutes) {
               return ListTile(
                 title: Text('$minutes minutes'),
                 trailing: _initialSeconds == minutes * 60

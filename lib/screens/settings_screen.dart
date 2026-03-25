@@ -58,7 +58,7 @@ class _SettingScreenState extends State<SettingScreen> {
             trailing: DropdownButton<int>(
               value: _defaultDuration,
               underline: const SizedBox(),
-              items: [15, 25, 45, 60].map((minutes) {
+              items: [5, 10, 15, 20, 25, 30, 45, 60].map((minutes) {
                 return DropdownMenuItem(
                   value: minutes,
                   child: Text('$minutes min'),
